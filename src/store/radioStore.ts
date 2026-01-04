@@ -1,15 +1,6 @@
 import { create } from 'zustand';
 import { radioAPI, Station } from '@/lib/radioAPI';
-
-const getProxyUrl = (originalUrl: string): string => {
-  try {
-    const url = new URL(originalUrl);
-    const pathWithoutProtocol = url.toString().replace(/^https?:\/\//, '');
-    return `/api/proxy/${pathWithoutProtocol}`;
-  } catch (error) {
-    return originalUrl;
-  }
-};
+import { Howl } from 'howler';
 
 interface RadioStore {
   stations: Station[];
@@ -21,7 +12,7 @@ interface RadioStore {
   errorStationId: string | null;
   searchQuery: string;
   selectedCountry: string;
-  audio: HTMLAudioElement | null;
+  audio: Howl | null;
   hasError: boolean;
   
   setStations: (stations: Station[]) => void;
@@ -38,7 +29,7 @@ interface RadioStore {
 }
 
 export const useRadioStore = create<RadioStore>((set, get) => {
-  let audioInstance: HTMLAudioElement | null = null;
+  let audioInstance: Howl | null = null;
 
   const loadLastStation = () => {
     const lastStation = localStorage.getItem('lastPlayedStation');
@@ -76,88 +67,93 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       set({ hasError: false, loadingStationId: station.id, playingStationId: null, errorStationId: null, currentStation: station });
       
       if (audioInstance) {
-        try {
-          audioInstance.pause();
-          audioInstance.src = '';
-          audioInstance.load();
-        } catch (e) {
-        }
-        audioInstance.removeEventListener('error', () => {});
-        audioInstance.removeEventListener('loadstart', () => {});
-        audioInstance.removeEventListener('loadedmetadata', () => {});
-        audioInstance.removeEventListener('canplay', () => {});
-        audioInstance.removeEventListener('playing', () => {});
+        audioInstance.unload();
         audioInstance = null;
       }
 
       await new Promise(resolve => setTimeout(resolve, 50));
 
-      audioInstance = new Audio();
-      audioInstance.preload = 'metadata';
-      audioInstance.crossOrigin = null;
-      audioInstance.src = station.url;
-      
-      const proxyUrl = getProxyUrl(station.url);
+      const setupMediaSession = (station: Station) => {
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: station.name,
+            artist: station.country || 'Online Stream',
+            album: 'Radio App',
+            artwork: station.favicon && station.favicon !== 'null' ? [
+              { src: station.favicon, sizes: '96x96', type: 'image/png' },
+              { src: station.favicon, sizes: '512x512', type: 'image/png' }
+            ] : [
+              { src: '/default-radio-icon-96.png', sizes: '96x96', type: 'image/png' },
+              { src: '/default-radio-icon-512.png', sizes: '512x512', type: 'image/png' }
+            ]
+          });
 
-      audioInstance.addEventListener('loadstart', () => {
-        const currentStore = get();
-        if (currentStore.currentStation?.id === station.id) {
-          set({ loadingStationId: null });
+          navigator.mediaSession.setActionHandler('play', () => {
+            const currentStore = get();
+            if (currentStore.currentStation) {
+              audioInstance?.play();
+              set({ playingStationId: currentStore.currentStation.id });
+            }
+          });
+          
+          navigator.mediaSession.setActionHandler('pause', () => {
+            audioInstance?.pause();
+            set({ playingStationId: null });
+          });
         }
-      });
-
-      audioInstance.addEventListener('error', (e) => {
-        const currentStore = get();
-        if (currentStore.currentStation?.id === station.id) {
-          if (audioInstance && !audioInstance.src?.includes('proxy')) {
-            audioInstance.src = proxyUrl;
-            audioInstance.crossOrigin = 'anonymous';
-            audioInstance.load();
-            audioInstance.play().then(() => {
-              const currentStore2 = get();
-              if (currentStore2.currentStation?.id === station.id) {
-                set({ 
-                  playingStationId: station.id,
-                  loadingStationId: null,
-                  errorStationId: null,
-                  currentStation: station,
-                  audio: audioInstance
-                });
-              }
-            }).catch(fallbackError => {
-              const currentStore3 = get();
-              if (currentStore3.currentStation?.id === station.id) {
-                set({ 
-                  errorStationId: station.id,
-                  loadingStationId: null,
-                  playingStationId: null
-                });
-              }
-            });
-          } else {
-            set({ 
-              errorStationId: station.id,
-              loadingStationId: null,
-              playingStationId: null,
-              audio: audioInstance
-            });
-          }
-        }
-      });
+      };
 
       try {
-        audioInstance.load();
+        audioInstance = new Howl({
+          src: [station.url],
+          html5: true,
+          preload: true,
+          onload: () => {
+            const currentStore = get();
+            if (currentStore.currentStation?.id === station.id) {
+              set({ loadingStationId: null });
+            }
+          },
+          onplay: () => {
+            const currentStore = get();
+            if (currentStore.currentStation?.id === station.id) {
+              set({ 
+                playingStationId: station.id,
+                loadingStationId: null,
+                errorStationId: null,
+                currentStation: station,
+                audio: audioInstance
+              });
+              setupMediaSession(station);
+              localStorage.setItem('lastPlayedStation', JSON.stringify(station));
+            }
+          },
+          onloaderror: (id, error) => {
+            const currentStore = get();
+            if (currentStore.currentStation?.id === station.id) {
+              set({ 
+                errorStationId: station.id,
+                loadingStationId: null,
+                playingStationId: null,
+                audio: audioInstance
+              });
+            }
+          },
+          onplayerror: (id, error) => {
+            const currentStore = get();
+            if (currentStore.currentStation?.id === station.id) {
+              set({ 
+                errorStationId: station.id,
+                loadingStationId: null,
+                playingStationId: null,
+                audio: audioInstance
+              });
+            }
+          }
+        });
+
         await audioInstance.play();
         
-        set({ 
-          playingStationId: station.id,
-          loadingStationId: null,
-          errorStationId: null,
-          currentStation: station,
-          audio: audioInstance
-        });
-        
-        localStorage.setItem('lastPlayedStation', JSON.stringify(station));
       } catch (error) {
         const currentStore = get();
         if (currentStore.currentStation?.id === station.id) {
@@ -176,6 +172,11 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       if (currentState.audio && currentState.playingStationId) {
         currentState.audio.pause();
         set({ playingStationId: null });
+        
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.setActionHandler('play', null);
+          navigator.mediaSession.setActionHandler('pause', null);
+        }
       }
     },
 

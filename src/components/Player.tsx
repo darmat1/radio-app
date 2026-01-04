@@ -16,7 +16,7 @@ export default function Player({ onSidebarToggle }: { onSidebarToggle: () => voi
 
   useEffect(() => {
     if (audio) {
-      audio.volume = volume;
+      audio.volume(volume);
       localStorage.setItem('radioVolume', volume.toString());
     }
   }, [audio, volume]);
