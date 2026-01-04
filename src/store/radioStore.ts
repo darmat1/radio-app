@@ -16,7 +16,7 @@ interface RadioStore {
   selectedCountry: string;
   audio: Howl | null;
   hasError: boolean;
-  
+
   setStations: (stations: Station[]) => void;
   setCurrentStation: (station: Station | null) => void;
   setIsLoading: (loading: boolean) => void;
@@ -67,7 +67,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
 
     playStation: async (station) => {
       set({ hasError: false, loadingStationId: station.id, playingStationId: null, errorStationId: null, currentStation: station });
-      
+
       if (audioInstance) {
         audioInstance.unload();
         audioInstance = null;
@@ -97,7 +97,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
               set({ playingStationId: currentStore.currentStation.id });
             }
           });
-          
+
           navigator.mediaSession.setActionHandler('pause', () => {
             audioInstance?.pause();
             set({ playingStationId: null });
@@ -108,8 +108,10 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       let hasPlayed = false;
 
       try {
+        const urlsToTry = [station.url];
+
         audioInstance = new Howl({
-          src: [station.url],
+          src: urlsToTry,
           html5: true,
           preload: true,
           format: ['mp3', 'aac', 'ogg'],
@@ -120,7 +122,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             hasPlayed = true;
             const currentStore = get();
             if (currentStore.currentStation?.id === station.id) {
-              set({ 
+              set({
                 playingStationId: station.id,
                 loadingStationId: null,
                 errorStationId: null,
@@ -135,7 +137,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             console.log('Load error:', error, 'for station:', station.name);
             const currentStore = get();
             if (currentStore.currentStation?.id === station.id) {
-              set({ 
+              set({
                 errorStationId: station.id,
                 loadingStationId: null,
                 playingStationId: null,
@@ -147,7 +149,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             console.log('Play error:', error, 'for station:', station.name);
             const currentStore = get();
             if (currentStore.currentStation?.id === station.id) {
-              set({ 
+              set({
                 errorStationId: station.id,
                 loadingStationId: null,
                 playingStationId: null,
@@ -166,12 +168,12 @@ export const useRadioStore = create<RadioStore>((set, get) => {
 
         // Start playing
         await audioInstance.play();
-        
+
       } catch (error) {
         console.log('Playback error:', error);
         const currentStore = get();
         if (currentStore.currentStation?.id === station.id) {
-          set({ 
+          set({
             errorStationId: station.id,
             loadingStationId: null,
             playingStationId: null,
@@ -186,7 +188,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       if (currentState.audio && currentState.playingStationId) {
         currentState.audio.pause();
         set({ playingStationId: null });
-        
+
         if ('mediaSession' in navigator) {
           navigator.mediaSession.setActionHandler('play', null);
           navigator.mediaSession.setActionHandler('pause', null);
@@ -196,10 +198,10 @@ export const useRadioStore = create<RadioStore>((set, get) => {
 
     searchStations: async (query?: string, country?: string) => {
       set({ isLoading: true, hasError: false });
-      
+
       try {
         let results;
-        
+
         if (!query && country) {
           results = await radioAPI.searchByCountryExact(country, 30);
         } else if (query && !country) {
@@ -214,7 +216,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             order: 'name'
           });
         }
-        
+
         const formattedResults = results.map(station => ({
           id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
           name: station.name,
@@ -223,7 +225,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
           tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
           favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
         }));
-        
+
         set({ stations: formattedResults });
       } catch (error) {
         set({ hasError: true, stations: [] });

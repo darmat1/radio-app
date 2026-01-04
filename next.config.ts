@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'http', 
+        protocol: 'http',
         hostname: 'i.ibb.co',
         pathname: '/**',
       }
@@ -19,20 +19,6 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     unoptimized: false
   },
-  // Security headers to allow HTTP audio streams
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Upgrade-Insecure-Requests',
-            value: '1'
-          }
-        ]
-      }
-    ];
-  }
 };
 
 export default nextConfig;
