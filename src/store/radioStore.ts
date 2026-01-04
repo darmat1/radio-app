@@ -28,6 +28,8 @@ interface RadioStore {
   searchStations: (query?: string, country?: string) => Promise<void>;
   setHasError: (hasError: boolean) => void;
   loadLastStation: () => void;
+  playNext: () => void;
+  playPrevious: () => void;
 }
 
 export const useRadioStore = create<RadioStore>((set, get) => {
@@ -88,6 +90,10 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             album: 'Radio App',
             artwork: station.favicon && station.favicon !== 'null' ? [
               { src: station.favicon, sizes: '96x96', type: 'image/png' },
+              { src: station.favicon, sizes: '128x128', type: 'image/png' },
+              { src: station.favicon, sizes: '192x192', type: 'image/png' },
+              { src: station.favicon, sizes: '256x256', type: 'image/png' },
+              { src: station.favicon, sizes: '384x384', type: 'image/png' },
               { src: station.favicon, sizes: '512x512', type: 'image/png' }
             ] : [
               { src: '/default-radio-icon-96.png', sizes: '96x96', type: 'image/png' },
@@ -95,17 +101,41 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             ]
           });
 
+          navigator.mediaSession.playbackState = 'playing';
+
           navigator.mediaSession.setActionHandler('play', () => {
+            console.log('MediaSession: play');
             const currentStore = get();
-            if (currentStore.currentStation) {
-              audioInstance?.play();
-              set({ playingStationId: currentStore.currentStation.id });
+            if (currentStore.audio) {
+              currentStore.audio.play();
+              set({ playingStationId: currentStore.currentStation?.id || null });
+              navigator.mediaSession.playbackState = 'playing';
             }
           });
 
           navigator.mediaSession.setActionHandler('pause', () => {
-            audioInstance?.pause();
-            set({ playingStationId: null });
+            console.log('MediaSession: pause');
+            const currentStore = get();
+            if (currentStore.audio) {
+              currentStore.audio.pause();
+              set({ playingStationId: null });
+              navigator.mediaSession.playbackState = 'paused';
+            }
+          });
+
+          // Add stop handler to help with background management
+          navigator.mediaSession.setActionHandler('stop', () => {
+            get().pauseStation();
+          });
+
+          navigator.mediaSession.setActionHandler('nexttrack', () => {
+            console.log('MediaSession: nexttrack');
+            get().playNext();
+          });
+
+          navigator.mediaSession.setActionHandler('previoustrack', () => {
+            console.log('MediaSession: previoustrack');
+            get().playPrevious();
           });
         }
       };
@@ -206,13 +236,12 @@ export const useRadioStore = create<RadioStore>((set, get) => {
 
     pauseStation: () => {
       const currentState = get();
-      if (currentState.audio && currentState.playingStationId) {
+      if (currentState.audio) {
         currentState.audio.pause();
         set({ playingStationId: null });
 
         if ('mediaSession' in navigator) {
-          navigator.mediaSession.setActionHandler('play', null);
-          navigator.mediaSession.setActionHandler('pause', null);
+          navigator.mediaSession.playbackState = 'paused';
         }
       }
     },
@@ -253,6 +282,36 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       } finally {
         set({ isLoading: false });
       }
+    },
+
+    playNext: () => {
+      const { stations, currentStation, playStation } = get();
+      if (stations.length === 0 || !currentStation) return;
+
+      const currentIndex = stations.findIndex(s => s.id === currentStation.id);
+      if (currentIndex === -1) {
+        // If current not in list (e.g. search changed), play first
+        playStation(stations[0]);
+        return;
+      }
+
+      const nextIndex = (currentIndex + 1) % stations.length;
+      playStation(stations[nextIndex]);
+    },
+
+    playPrevious: () => {
+      const { stations, currentStation, playStation } = get();
+      if (stations.length === 0 || !currentStation) return;
+
+      const currentIndex = stations.findIndex(s => s.id === currentStation.id);
+      if (currentIndex === -1) {
+        // If current not in list, play last
+        playStation(stations[stations.length - 1]);
+        return;
+      }
+
+      const prevIndex = (currentIndex - 1 + stations.length) % stations.length;
+      playStation(stations[prevIndex]);
     },
 
     loadLastStation

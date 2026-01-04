@@ -66,11 +66,6 @@ export default function Player({ onSidebarToggle }: { onSidebarToggle: () => voi
             }}
             disabled={loadingStationId === currentStation?.id}
             className="w-12 h-12 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 rounded-full flex items-center justify-center transition-colors flex-shrink-0 relative overflow-hidden"
-            style={{
-              backgroundImage: "url(/misha.jpg)",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
           >
             {loadingStationId === currentStation?.id ? (
               <div className="relative">
