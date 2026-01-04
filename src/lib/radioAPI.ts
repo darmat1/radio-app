@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://de1.api.radio-browser.info/';
+const API_BASE_URL = 'https://de1.api.radio-browser.info/';
 
 export interface Station {
   id: string;
