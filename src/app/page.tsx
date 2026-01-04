@@ -27,6 +27,20 @@ export default function Home() {
 
     loadLastStation();
     searchStations();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        const store = (useRadioStore as any).getState();
+        if (store.playingStationId) {
+          store.syncMediaSession();
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   return (

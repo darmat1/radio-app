@@ -30,10 +30,45 @@ interface RadioStore {
   loadLastStation: () => void;
   playNext: () => void;
   playPrevious: () => void;
+  syncMediaSession: () => void;
 }
 
 export const useRadioStore = create<RadioStore>((set, get) => {
   let audioInstance: Howl | null = null;
+  let heartbeatAudio: HTMLAudioElement | null = null;
+  let heartbeatInterval: any = null;
+
+  // Small base64 silence MP3 (1 second)
+  const SILENCE_SRC = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
+
+  const initHeartbeat = () => {
+    if (typeof window === 'undefined') return;
+    if (!heartbeatAudio) {
+      heartbeatAudio = new Audio(SILENCE_SRC);
+      heartbeatAudio.loop = true;
+      heartbeatAudio.volume = 0.01; // Low volume just in case
+    }
+  };
+
+  const startHeartbeat = () => {
+    initHeartbeat();
+    heartbeatAudio?.play().catch(() => { });
+
+    // Periodic MediaSession refresh to fool OS throttling
+    if (!heartbeatInterval) {
+      heartbeatInterval = setInterval(() => {
+        get().syncMediaSession();
+      }, 10000);
+    }
+  };
+
+  const stopHeartbeat = () => {
+    heartbeatAudio?.pause();
+    if (heartbeatInterval) {
+      clearInterval(heartbeatInterval);
+      heartbeatInterval = null;
+    }
+  };
 
   const loadLastStation = () => {
     const lastStation = localStorage.getItem('lastPlayedStation');
@@ -170,6 +205,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
               });
               setupMediaSession(station);
               localStorage.setItem('lastPlayedStation', JSON.stringify(station));
+              startHeartbeat();
 
               // Ensure playback state is updated in MediaSession
               if ('mediaSession' in navigator) {
@@ -254,9 +290,28 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       if (currentState.audio) {
         currentState.audio.pause();
         set({ playingStationId: null });
+        stopHeartbeat();
 
         if ('mediaSession' in navigator) {
           navigator.mediaSession.playbackState = 'paused';
+        }
+      }
+    },
+
+    syncMediaSession: () => {
+      const { currentStation, playingStationId } = get();
+      if (currentStation && playingStationId && 'mediaSession' in navigator) {
+        // Re-apply metadata to keep it fresh in system's mind
+        navigator.mediaSession.playbackState = 'playing';
+        // Subtle metadata update to trigger system refresh
+        if (navigator.mediaSession.metadata) {
+          const backup = navigator.mediaSession.metadata;
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: backup.title,
+            artist: backup.artist,
+            album: backup.album,
+            artwork: [...backup.artwork]
+          });
         }
       }
     },
