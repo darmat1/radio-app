@@ -90,7 +90,7 @@ class RadioAPI {
         return [];
       }
       const data = await response.json();
-      return data.filter(station => station.name && !station.name.startsWith('.'));
+      return data.filter((station: any) => station.name && !station.name.startsWith('.'));
     } catch (error) {
       return [];
     }
@@ -108,7 +108,7 @@ class RadioAPI {
         return [];
       }
       const data = await response.json();
-      return data.filter(station => station.name && !station.name.startsWith('.'));
+      return data.filter((station: any) => station.name && !station.name.startsWith('.'));
     } catch (error) {
       return [];
     }
@@ -128,8 +128,7 @@ class RadioAPI {
       if (!response.ok) {
         return [];
       }
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
       return [];
     }
@@ -269,7 +268,7 @@ class RadioAPI {
         return [];
       }
       const data = await response.json();
-      return data.filter(station => station.name && !station.name.startsWith('.'));
+      return data.filter((station: any) => station.name && !station.name.startsWith('.'));
     } catch (error) {
       return [];
     }

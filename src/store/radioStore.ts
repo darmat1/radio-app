@@ -15,6 +15,7 @@ interface RadioStore {
   stations: Station[];
   currentStation: Station | null;
   isLoading: boolean;
+  isAudioLoading: boolean;
   loadingStationId: string | null;
   playingStationId: string | null;
   errorStationId: string | null;
@@ -25,7 +26,6 @@ interface RadioStore {
   
   setStations: (stations: Station[]) => void;
   setCurrentStation: (station: Station | null) => void;
-  setIsPlaying: (playing: boolean) => void;
   setIsLoading: (loading: boolean) => void;
   setIsAudioLoading: (loading: boolean) => void;
   setSearchQuery: (query: string) => void;
@@ -55,6 +55,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
     stations: [],
     currentStation: null,
     isLoading: false,
+    isAudioLoading: false,
     loadingStationId: null,
     playingStationId: null,
     errorStationId: null,
@@ -65,7 +66,6 @@ export const useRadioStore = create<RadioStore>((set, get) => {
 
     setStations: (stations) => set({ stations }),
     setCurrentStation: (station) => set({ currentStation: station }),
-    setIsPlaying: (playing) => set({ isPlaying: playing }),
     setIsLoading: (loading) => set({ isLoading: loading }),
     setIsAudioLoading: (loading) => set({ isAudioLoading: loading }),
     setSearchQuery: (query) => set({ searchQuery: query }),
@@ -109,7 +109,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       audioInstance.addEventListener('error', (e) => {
         const currentStore = get();
         if (currentStore.currentStation?.id === station.id) {
-          if (!audioInstance.src?.includes('proxy')) {
+          if (audioInstance && !audioInstance.src?.includes('proxy')) {
             audioInstance.src = proxyUrl;
             audioInstance.crossOrigin = 'anonymous';
             audioInstance.load();
