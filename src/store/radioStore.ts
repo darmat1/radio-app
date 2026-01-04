@@ -103,18 +103,47 @@ export const useRadioStore = create<RadioStore>((set, get) => {
         }
       };
 
+      let hasLoaded = false;
+      let hasPlayed = false;
+      let loadTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+      // Set a timeout to handle slow connections
+      const clearTimeouts = () => {
+        if (loadTimeoutId) {
+          clearTimeout(loadTimeoutId);
+          loadTimeoutId = null;
+        }
+      };
+
+      const handleLoadError = () => {
+        // Only show error if not already loaded or playing
+        if (!hasLoaded && !hasPlayed) {
+          const currentStore = get();
+          if (currentStore.currentStation?.id === station.id) {
+            set({ 
+              errorStationId: station.id,
+              loadingStationId: null,
+              playingStationId: null,
+              audio: audioInstance
+            });
+          }
+        }
+      };
+
       try {
         audioInstance = new Howl({
           src: [station.url],
           html5: true,
           preload: true,
+          format: ['mp3', 'aac', 'ogg'],
           onload: () => {
-            const currentStore = get();
-            if (currentStore.currentStation?.id === station.id) {
-              set({ loadingStationId: null });
-            }
+            clearTimeouts();
+            hasLoaded = true;
+            console.log('Stream loaded successfully:', station.name);
           },
           onplay: () => {
+            clearTimeouts();
+            hasPlayed = true;
             const currentStore = get();
             if (currentStore.currentStation?.id === station.id) {
               set({ 
@@ -129,32 +158,34 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             }
           },
           onloaderror: (id, error) => {
-            const currentStore = get();
-            if (currentStore.currentStation?.id === station.id) {
-              set({ 
-                errorStationId: station.id,
-                loadingStationId: null,
-                playingStationId: null,
-                audio: audioInstance
-              });
-            }
+            console.log('Load error:', error, 'for station:', station.name);
+            // Wait a moment before showing error to allow for slow connections
+            loadTimeoutId = setTimeout(() => {
+              handleLoadError();
+            }, 3000);
           },
           onplayerror: (id, error) => {
-            const currentStore = get();
-            if (currentStore.currentStation?.id === station.id) {
-              set({ 
-                errorStationId: station.id,
-                loadingStationId: null,
-                playingStationId: null,
-                audio: audioInstance
-              });
-            }
+            console.log('Play error:', error, 'for station:', station.name);
+            // Wait a moment before showing error to allow for slow connections
+            loadTimeoutId = setTimeout(() => {
+              handleLoadError();
+            }, 3000);
+          },
+          onend: () => {
+            // Handle stream ending (reconnect logic can be added here)
+            console.log('Stream ended for:', station.name);
+          },
+          onstop: () => {
+            console.log('Stream stopped for:', station.name);
           }
         });
 
+        // Start playing
         await audioInstance.play();
         
       } catch (error) {
+        clearTimeouts();
+        console.log('Playback error:', error);
         const currentStore = get();
         if (currentStore.currentStation?.id === station.id) {
           set({ 

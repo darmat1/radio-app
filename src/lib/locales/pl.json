@@ -4,7 +4,9 @@
     "selectStation": "Wybierz stację radiową"
   },
   "player": {
-    "selectStation": "Wybierz stację radiową"
+    "selectStation": "Wybierz stację radiową",
+    "loading": "Ładowanie...",
+    "error": "Błąd"
   },
   "search": {
     "placeholder": "Szukaj stacji...",
@@ -16,7 +18,8 @@
   "stations": {
     "noResults": "Nie znaleziono stacji",
     "loading": "Ładowanie stacji...",
-    "error": "Błąd ładowania stacji"
+    "loadingError": "Błąd ładowania stacji",
+    "error": "Błąd"
   },
   "language": {
     "select": "Wybierz język"

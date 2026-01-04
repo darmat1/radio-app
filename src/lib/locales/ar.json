@@ -4,7 +4,9 @@
     "selectStation": "اختر محطة إذاعية"
   },
   "player": {
-    "selectStation": "اختر محطة إذاعية"
+    "selectStation": "اختر محطة إذاعية",
+    "loading": "جاري التحميل...",
+    "error": "خطأ"
   },
   "search": {
     "placeholder": "البحث عن المحطات...",
@@ -16,7 +18,8 @@
   "stations": {
     "noResults": "لم يتم العثور على محطات",
     "loading": "جاري تحميل المحطات...",
-    "error": "فشل في تحميل المحطات"
+    "loadingError": "فشل في تحميل المحطات",
+    "error": "خطأ"
   },
   "language": {
     "select": "اختر اللغة"

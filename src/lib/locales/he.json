@@ -4,7 +4,9 @@
     "selectStation": "בחר תחנת רדיו"
   },
   "player": {
-    "selectStation": "בחר תחנת רדיו"
+    "selectStation": "בחר תחנת רדיו",
+    "loading": "טעינה...",
+    "error": "שגיאה"
   },
   "search": {
     "placeholder": "חיפוש תחנות...",
@@ -16,7 +18,8 @@
   "stations": {
     "noResults": "לא נמצאו תחנות",
     "loading": "טעינת תחנות...",
-    "error": "שגיאה בטעינת תחנות"
+    "error": "שגיאה בטעינת תחנות",
+    "loadingError": "שגיאה בטעינת תחנות"
   },
   "language": {
     "select": "בחר שפה"

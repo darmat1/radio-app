@@ -4,7 +4,9 @@
     "selectStation": "Selectați o stație radio"
   },
   "player": {
-    "selectStation": "Selectați o stație radio"
+    "selectStation": "Selectați o stație radio",
+    "loading": "Se încarcă...",
+    "error": "Eroare"
   },
   "search": {
     "placeholder": "Căutați stații...",
@@ -16,7 +18,8 @@
   "stations": {
     "noResults": "Nu s-au găsit stații",
     "loading": "Se încarcă stațiile...",
-    "error": "Eroare la încărcarea stațiilor"
+    "error": "Eroare la încărcarea stațiilor",
+    "loadingError": "Eroare la încărcarea stațiilor"
   },
   "language": {
     "select": "Selectați limba"

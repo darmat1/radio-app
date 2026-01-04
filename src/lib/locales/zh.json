@@ -4,7 +4,9 @@
     "selectStation": "选择广播电台"
   },
   "player": {
-    "selectStation": "选择广播电台"
+    "selectStation": "选择广播电台",
+    "loading": "加载中...",
+    "error": "错误"
   },
   "search": {
     "placeholder": "搜索电台...",
@@ -16,7 +18,8 @@
   "stations": {
     "noResults": "未找到电台",
     "loading": "加载电台中...",
-    "error": "加载电台失败"
+    "loadingError": "加载电台失败",
+    "error": "错误"
   },
   "language": {
     "select": "选择语言"

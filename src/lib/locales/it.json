@@ -4,7 +4,9 @@
     "selectStation": "Seleziona una stazione radio"
   },
   "player": {
-    "selectStation": "Seleziona una stazione radio"
+    "selectStation": "Seleziona una stazione radio",
+    "loading": "Caricamento...",
+    "error": "Errore"
   },
   "search": {
     "placeholder": "Cerca stazioni...",
@@ -17,7 +19,8 @@
     "noResults": "Nessuna stazione trovata",
     "tryChangeFilters": "Prova a cambiare la ricerca o i filtri",
     "loading": "Caricamento stazioni...",
-    "error": "Errore nel caricamento delle stazioni",
+    "loadingError": "Errore nel caricamento delle stazioni",
+    "error": "Errore",
     "title": "Stazioni radio",
     "nowPlaying": "In riproduzione"
   },

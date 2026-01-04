@@ -4,7 +4,9 @@
     "selectStation": "Válasszon rádióállomást"
   },
   "player": {
-    "selectStation": "Válasszon rádióállomást"
+    "selectStation": "Válasszon rádióállomást",
+    "loading": "Betöltés...",
+    "error": "Hiba"
   },
   "search": {
     "placeholder": "Állomások keresése...",
@@ -16,7 +18,8 @@
   "stations": {
     "noResults": "Nem található állomás",
     "loading": "Állomások betöltése...",
-    "error": "Állomások betöltése sikertelen"
+    "error": "Állomások betöltése sikertelen",
+    "loadingError": "Állomások betöltése sikertelen"
   },
   "language": {
     "select": "Nyelv kiválasztása"

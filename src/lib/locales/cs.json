@@ -4,7 +4,9 @@
     "selectStation": "Vyberte rozhlasovou stanici"
   },
   "player": {
-    "selectStation": "Vyberte rozhlasovou stanici"
+    "selectStation": "Vyberte rozhlasovou stanici",
+    "loading": "Načítání...",
+    "error": "Chyba"
   },
   "search": {
     "placeholder": "Hledat stanice...",
@@ -16,7 +18,8 @@
   "stations": {
     "noResults": "Nebyly nalezeny žádné stanice",
     "loading": "Načítání stanic...",
-    "error": "Chyba při načítání stanic"
+    "error": "Chyba při načítání stanic",
+    "loadingError": "Chyba při načítání stanic"
   },
   "language": {
     "select": "Vybrat jazyk"

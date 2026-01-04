@@ -4,7 +4,9 @@
     "selectStation": "Select a radio station"
   },
   "player": {
-    "selectStation": "Select a radio station"
+    "selectStation": "Select a radio station",
+    "loading": "Loading...",
+    "error": "Error"
   },
   "search": {
     "placeholder": "Search stations...",
@@ -20,8 +22,7 @@
     "tryChangeFilters": "Try changing search or filters",
     "tryDifferentSearch": "Try a different search term",
     "loading": "Loading stations...",
-    "loading": "Loading...",
-    "error": "Failed to load stations",
+    "loadingError": "Failed to load stations",
     "error": "Error",
     "retry": "Retry",
     "title": "Radio stations",

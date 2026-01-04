@@ -4,7 +4,9 @@
     "selectStation": "Radio stansiyasini tanlang"
   },
   "player": {
-    "selectStation": "Radio stansiyasini tanlang"
+    "selectStation": "Radio stansiyasini tanlang",
+    "loading": "Yuklanmoqda...",
+    "error": "Xato"
   },
   "search": {
     "placeholder": "Stansiyalarni qidirish...",
@@ -18,6 +20,7 @@
     "tryChangeFilters": "Qidirish yoki filterlarni o'zgartirib ko'ring",
     "loading": "Stansiyalar yuklanmoqda...",
     "error": "Stansiyalarni yuklab bo'lmadi",
+    "loadingError": "Stansiyalarni yuklash xatosi",
     "title": "Radio stansiyalari",
     "nowPlaying": "Hozir ijro etilmoqda"
   },
