@@ -23,7 +23,7 @@ interface RadioStore {
   setIsAudioLoading: (loading: boolean) => void;
   setSearchQuery: (query: string) => void;
   setSelectedCountry: (country: string) => void;
-  playStation: (station: Station) => void;
+  playStation: (station: Station, useProxy?: boolean) => void;
   pauseStation: () => void;
   searchStations: (query?: string, country?: string) => Promise<void>;
   setHasError: (hasError: boolean) => void;
@@ -65,8 +65,13 @@ export const useRadioStore = create<RadioStore>((set, get) => {
     setSelectedCountry: (country) => set({ selectedCountry: country }),
     setHasError: (hasError) => set({ hasError }),
 
-    playStation: async (station) => {
-      set({ hasError: false, loadingStationId: station.id, playingStationId: null, errorStationId: null, currentStation: station });
+    playStation: async (station, useProxy = false) => {
+      // Don't reset state if we are retrying with proxy to avoid UI flickering
+      if (!useProxy) {
+        set({ hasError: false, loadingStationId: station.id, playingStationId: null, errorStationId: null, currentStation: station });
+      } else {
+        console.log('Retrying with proxy for:', station.name);
+      }
 
       if (audioInstance) {
         audioInstance.unload();
@@ -108,7 +113,11 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       let hasPlayed = false;
 
       try {
-        const urlsToTry = [station.url];
+        const streamUrl = useProxy
+          ? `/api/proxy?url=${encodeURIComponent(station.url)}`
+          : station.url;
+
+        const urlsToTry = [streamUrl];
 
         audioInstance = new Howl({
           src: urlsToTry,
@@ -116,7 +125,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
           preload: true,
           format: ['mp3', 'aac', 'ogg'],
           onload: () => {
-            console.log('Stream loaded successfully:', station.name);
+            console.log('Stream loaded successfully:', station.name, useProxy ? '(via proxy)' : '(direct)');
           },
           onplay: () => {
             hasPlayed = true;
@@ -134,31 +143,40 @@ export const useRadioStore = create<RadioStore>((set, get) => {
             }
           },
           onloaderror: (id, error) => {
-            console.log('Load error:', error, 'for station:', station.name);
+            console.log('Load error:', error, 'for station:', station.name, useProxy ? '(proxy failed)' : '(trying proxy fallback)');
             const currentStore = get();
             if (currentStore.currentStation?.id === station.id) {
-              set({
-                errorStationId: station.id,
-                loadingStationId: null,
-                playingStationId: null,
-                audio: audioInstance
-              });
+              if (!useProxy) {
+                // Initial attempt failed, retry with proxy
+                get().playStation(station, true);
+              } else {
+                set({
+                  errorStationId: station.id,
+                  loadingStationId: null,
+                  playingStationId: null,
+                  audio: audioInstance
+                });
+              }
             }
           },
           onplayerror: (id, error) => {
-            console.log('Play error:', error, 'for station:', station.name);
+            console.log('Play error:', error, 'for station:', station.name, useProxy ? '(proxy failed)' : '(trying proxy fallback)');
             const currentStore = get();
             if (currentStore.currentStation?.id === station.id) {
-              set({
-                errorStationId: station.id,
-                loadingStationId: null,
-                playingStationId: null,
-                audio: audioInstance
-              });
+              if (!useProxy) {
+                // Initial attempt failed, retry with proxy
+                get().playStation(station, true);
+              } else {
+                set({
+                  errorStationId: station.id,
+                  loadingStationId: null,
+                  playingStationId: null,
+                  audio: audioInstance
+                });
+              }
             }
           },
           onend: () => {
-            // Handle stream ending (reconnect logic can be added here)
             console.log('Stream ended for:', station.name);
           },
           onstop: () => {
@@ -166,19 +184,22 @@ export const useRadioStore = create<RadioStore>((set, get) => {
           }
         });
 
-        // Start playing
         await audioInstance.play();
 
       } catch (error) {
         console.log('Playback error:', error);
-        const currentStore = get();
-        if (currentStore.currentStation?.id === station.id) {
-          set({
-            errorStationId: station.id,
-            loadingStationId: null,
-            playingStationId: null,
-            audio: audioInstance
-          });
+        if (!useProxy) {
+          get().playStation(station, true);
+        } else {
+          const currentStore = get();
+          if (currentStore.currentStation?.id === station.id) {
+            set({
+              errorStationId: station.id,
+              loadingStationId: null,
+              playingStationId: null,
+              audio: audioInstance
+            });
+          }
         }
       }
     },
