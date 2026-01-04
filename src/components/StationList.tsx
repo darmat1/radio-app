@@ -60,9 +60,9 @@ export default function StationList() {
   }
 
   return (
-    <div className="bg-gray-900 p-4 rounded-lg">
+    <div>
       <h2 className="text-white font-medium mb-3">{t('stations.title')} ({stations.length})</h2>
-      <div className="space-y-2 max-h-96 overflow-y-auto">
+      <div className="space-y-2">
         {stations.map((station, index) => (
           <button
             key={`${station.id}-${index}`}

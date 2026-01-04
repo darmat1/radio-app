@@ -89,7 +89,7 @@ export default function Search() {
   };
 
   return (
-    <div className="bg-gray-900 p-4 rounded-lg space-y-3">
+    <div className="space-y-3">
       <div className="flex space-x-2">
         <div className="flex-1 relative">
           <input

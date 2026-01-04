@@ -6,7 +6,7 @@ import { useRadioStore } from '@/store/radioStore';
 import { radioAPI } from '@/lib/radioAPI';
 import LanguageSelector from '@/components/LanguageSelector';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { t } = useTranslation();
   const { 
     searchStations, 
@@ -17,7 +17,6 @@ export default function Sidebar() {
     setSelectedCountry 
   } = useRadioStore();
   
-  const [isOpen, setIsOpen] = useState(false);
   const [languages, setLanguages] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
   
@@ -33,9 +32,7 @@ export default function Sidebar() {
   });
 
   useEffect(() => {
-    console.log('Sidebar useEffect triggered, isOpen:', isOpen);
     if (isOpen) {
-      console.log('Loading filter data...');
       loadFilterData();
     }
   }, [isOpen]);
@@ -88,7 +85,7 @@ export default function Sidebar() {
       });
       
       // Close sidebar after search
-      setIsOpen(false);
+      onClose();
     } catch (error) {
       console.error('Search failed:', error);
       setIsLoading(false);
@@ -145,7 +142,7 @@ export default function Sidebar() {
         hasError: false
       });
       
-      setIsOpen(false);
+      onClose();
     } catch (error) {
       console.error('Failed to load stations:', error);
       setIsLoading(false);
@@ -158,12 +155,12 @@ export default function Sidebar() {
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={() => setIsOpen(false)}
+          onClick={onClose}
         />
       )}
       
       {/* Sidebar */}
-      <div className={`fixed top-0 right-0 h-full w-80 bg-gray-900 transform transition-transform z-50 ${
+      <div className={`fixed top-0 right-0 h-full w-80 bg-gray-900 transform transition-transform duration-300 ease-in-out z-50 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="h-full overflow-y-auto">
@@ -172,7 +169,7 @@ export default function Sidebar() {
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-white">{t('sidebar.title')}</h3>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={onClose}
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -320,16 +317,6 @@ export default function Sidebar() {
           </div>
         </div>
       </div>
-
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-l-lg shadow-lg flex items-center justify-center z-30 transition-all hover:pr-2 group"
-      >
-        <svg className="w-6 h-6 text-white group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
     </>
   );
 }
