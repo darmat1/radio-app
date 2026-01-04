@@ -13,6 +13,22 @@ export interface Station {
   homepage?: string;
 }
 
+// Функция для фильтрации нежелательного контента
+const isStationAllowed = (station: Station): boolean => {
+  const blockedKeywords = [
+    'Abdul', 'abdul', 'Abdul', 'terrorist', 'isis', 'isil',
+    'аллах', 'джихад', 'террорист', 'экстремист',
+    'terror', 'extremist', 'radical', 'radical'
+  ];
+
+  // Только проверка названия станции
+  const stationNameLower = station.name.toLowerCase();
+  if (blockedKeywords.some(keyword => stationNameLower.includes(keyword.toLowerCase()))) {
+    return false;
+  }
+  return true;
+};
+
 class RadioAPI {
   private baseURL: string;
 
@@ -26,13 +42,13 @@ class RadioAPI {
       url.searchParams.set('limit', limit.toString());
       url.searchParams.set('order', 'name');
       url.searchParams.set('hidebroken', 'true');
-      
+
       const response = await fetch(url.toString());
-      
+
       if (!response.ok) {
         return [];
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
@@ -46,12 +62,24 @@ class RadioAPI {
       url.searchParams.set('limit', limit.toString());
       url.searchParams.set('order', 'name');
       url.searchParams.set('hidebroken', 'true');
-      
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
       }
-      return await response.json();
+      const data = await response.json();
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
     } catch (error) {
       return [];
     }
@@ -64,12 +92,24 @@ class RadioAPI {
       url.searchParams.set('order', 'stationcount');
       url.searchParams.set('reverse', 'true');
       url.searchParams.set('hidebroken', 'true');
-      
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
       }
-      return await response.json();
+      const data = await response.json();
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
     } catch (error) {
       return [];
     }
@@ -84,13 +124,24 @@ class RadioAPI {
       if (country) {
         url.searchParams.set('country', country);
       }
-      
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
       }
       const data = await response.json();
-      return data.filter((station: any) => station.name && !station.name.startsWith('.'));
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
     } catch (error) {
       return [];
     }
@@ -102,13 +153,82 @@ class RadioAPI {
       if (limit) {
         url.searchParams.set('limit', limit.toString());
       }
-      
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
       }
       const data = await response.json();
-      return data.filter((station: any) => station.name && !station.name.startsWith('.'));
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  async searchByCountry(country: string, limit: number = 50): Promise<any[]> {
+    try {
+      const url = new URL(`${this.baseURL}json/stations/bycountry/${encodeURIComponent(country)}`);
+      if (limit) {
+        url.searchParams.set('limit', limit.toString());
+      }
+
+      const response = await fetch(url.toString());
+      if (!response.ok) {
+        return [];
+      }
+      const data = await response.json();
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  async searchByUrl(url: string, limit: number = 50): Promise<any[]> {
+    try {
+      const searchUrl = new URL(`${this.baseURL}json/stations/byurl/${encodeURIComponent(url)}`);
+      if (limit) {
+        searchUrl.searchParams.set('limit', limit.toString());
+      }
+
+      const response = await fetch(searchUrl.toString());
+      if (!response.ok) {
+        return [];
+      }
+      const data = await response.json();
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
     } catch (error) {
       return [];
     }
@@ -123,7 +243,7 @@ class RadioAPI {
       if (country) {
         url.searchParams.set('country', country);
       }
-      
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
@@ -143,7 +263,7 @@ class RadioAPI {
       if (country) {
         url.searchParams.set('country', country);
       }
-      
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
@@ -163,7 +283,7 @@ class RadioAPI {
       if (country) {
         url.searchParams.set('country', country);
       }
-      
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
@@ -204,7 +324,7 @@ class RadioAPI {
   }): Promise<any[]> {
     try {
       const url = new URL(`${this.baseURL}json/stations/search`);
-      
+
       const {
         name,
         nameExact = false,
@@ -262,13 +382,24 @@ class RadioAPI {
       if (offset > 0) url.searchParams.set('offset', offset.toString());
       if (limit && limit !== 100000) url.searchParams.set('limit', limit.toString());
       if (hidebroken) url.searchParams.set('hidebroken', 'true');
-       
+
       const response = await fetch(url.toString());
       if (!response.ok) {
         return [];
       }
       const data = await response.json();
-      return data.filter((station: any) => station.name && !station.name.startsWith('.'));
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
     } catch (error) {
       return [];
     }
@@ -281,7 +412,19 @@ class RadioAPI {
       if (!response.ok) {
         return [];
       }
-      return await response.json();
+      const data = await response.json();
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
     } catch (error) {
       return [];
     }
@@ -325,7 +468,7 @@ class RadioAPI {
     }
   }
 
-  async getStationsByUUID(uuid: string, limit: number = 50): Promise<any[]> {
+  async searchByUUID(uuid: string, limit: number = 50): Promise<any[]> {
     try {
       const url = new URL(`${this.baseURL}json/stations/byuuid/${uuid}`);
       if (limit) {
@@ -335,7 +478,19 @@ class RadioAPI {
       if (!response.ok) {
         return [];
       }
-      return await response.json();
+      const data = await response.json();
+      return data.filter((station: any) => {
+        const stationObj: Station = {
+          id: station.id || station.stationuuid || Math.random().toString(36).substr(2, 9),
+          name: station.name,
+          url: station.url_resolved || station.url,
+          country: station.country || '',
+          tags: Array.isArray(station.tags) ? station.tags : (station.tags ? station.tags.split(',') : []),
+          favicon: station.favicon && station.favicon !== 'null' ? station.favicon : undefined
+        };
+
+        return station.name && !station.name.startsWith('.') && isStationAllowed(stationObj);
+      });
     } catch (error) {
       return [];
     }
