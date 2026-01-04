@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "רדיו",
+    "selectStation": "בחר תחנת רדיו"
+  },
+  "player": {
+    "selectStation": "בחר תחנת רדיו"
+  },
+  "search": {
+    "placeholder": "חיפוש תחנות...",
+    "byName": "לפי שם",
+    "byCountry": "לפי מדינה",
+    "topStations": "תחנות מובילות",
+    "randomStations": "תחנות אקראיות"
+  },
+  "stations": {
+    "noResults": "לא נמצאו תחנות",
+    "loading": "טעינת תחנות...",
+    "error": "שגיאה בטעינת תחנות"
+  },
+  "language": {
+    "select": "בחר שפה"
+  }
+}

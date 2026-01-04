@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "Rádio",
+    "selectStation": "Vyberte rozhlasovou stanici"
+  },
+  "player": {
+    "selectStation": "Vyberte rozhlasovou stanici"
+  },
+  "search": {
+    "placeholder": "Hledat stanice...",
+    "byName": "Podle názvu",
+    "byCountry": "Podle země",
+    "topStations": "Top stanice",
+    "randomStations": "Náhodné stanice"
+  },
+  "stations": {
+    "noResults": "Nebyly nalezeny žádné stanice",
+    "loading": "Načítání stanic...",
+    "error": "Chyba při načítání stanic"
+  },
+  "language": {
+    "select": "Vybrat jazyk"
+  }
+}

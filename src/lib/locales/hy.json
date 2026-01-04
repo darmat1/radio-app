@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Ռադիո",
+    "selectStation": "Ընտրեք ռադիոկայան"
+  },
+  "player": {
+    "selectStation": "Ընտրեք ռադիոկայան"
+  },
+  "search": {
+    "placeholder": "Կայանների որոնում...",
+    "byName": "Ըստ անվան",
+    "byCountry": "Ըստ երկրի",
+    "topStations": "Թոփ կայաններ",
+    "randomStations": "Պատահական կայաններ"
+  },
+  "stations": {
+    "noResults": "Կայաններ չեն գտնվել",
+    "tryChangeFilters": "Փորձեք փոխել որոնումը կամ ֆիլտրերը",
+    "loading": "Կայանների բեռնում...",
+    "error": "Չհաջողվեց բեռնել կայանները",
+    "title": "Ռադիոկայաններ",
+    "nowPlaying": "Հիմա հնչում է"
+  },
+  "language": {
+    "select": "Ընտրել լեզու"
+  },
+  "profile": {
+    "guest": "Հյուր",
+    "webApp": "Վեբ հավելված",
+    "telegramUser": "Telegram օգտատեր"
+  }
+}

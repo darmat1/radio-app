@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "Radio",
+    "selectStation": "Wybierz stację radiową"
+  },
+  "player": {
+    "selectStation": "Wybierz stację radiową"
+  },
+  "search": {
+    "placeholder": "Szukaj stacji...",
+    "byName": "Według nazwy",
+    "byCountry": "Według kraju",
+    "topStations": "Najlepsze stacje",
+    "randomStations": "Losowe stacje"
+  },
+  "stations": {
+    "noResults": "Nie znaleziono stacji",
+    "loading": "Ładowanie stacji...",
+    "error": "Błąd ładowania stacji"
+  },
+  "language": {
+    "select": "Wybierz język"
+  }
+}

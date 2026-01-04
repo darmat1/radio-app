@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "راديو",
+    "selectStation": "اختر محطة إذاعية"
+  },
+  "player": {
+    "selectStation": "اختر محطة إذاعية"
+  },
+  "search": {
+    "placeholder": "البحث عن المحطات...",
+    "byName": "بالاسم",
+    "byCountry": "بالبلد",
+    "topStations": "أهم المحطات",
+    "randomStations": "محطات عشوائية"
+  },
+  "stations": {
+    "noResults": "لم يتم العثور على محطات",
+    "loading": "جاري تحميل المحطات...",
+    "error": "فشل في تحميل المحطات"
+  },
+  "language": {
+    "select": "اختر اللغة"
+  }
+}

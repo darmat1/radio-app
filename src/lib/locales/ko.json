@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "라디오",
+    "selectStation": "라디오 방송국 선택"
+  },
+  "player": {
+    "selectStation": "라디오 방송국 선택"
+  },
+  "search": {
+    "placeholder": "방송국 검색...",
+    "byName": "이름으로",
+    "byCountry": "국가별",
+    "topStations": "인기 방송국",
+    "randomStations": "무작위 방송국"
+  },
+  "stations": {
+    "noResults": "방송국을 찾을 수 없습니다",
+    "loading": "방송국 로딩 중...",
+    "error": "방송국 로딩 실패"
+  },
+  "language": {
+    "select": "언어 선택"
+  }
+}

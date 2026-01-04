@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Radio",
+    "selectStation": "Seleziona una stazione radio"
+  },
+  "player": {
+    "selectStation": "Seleziona una stazione radio"
+  },
+  "search": {
+    "placeholder": "Cerca stazioni...",
+    "byName": "Per nome",
+    "byCountry": "Per paese",
+    "topStations": "Stazioni principali",
+    "randomStations": "Stazioni casuali"
+  },
+  "stations": {
+    "noResults": "Nessuna stazione trovata",
+    "tryChangeFilters": "Prova a cambiare la ricerca o i filtri",
+    "loading": "Caricamento stazioni...",
+    "error": "Errore nel caricamento delle stazioni",
+    "title": "Stazioni radio",
+    "nowPlaying": "In riproduzione"
+  },
+  "language": {
+    "select": "Seleziona lingua"
+  },
+  "profile": {
+    "guest": "Ospite",
+    "webApp": "Applicazione web",
+    "telegramUser": "Utente Telegram"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "app": {
+    "title": "ラジオ",
+    "selectStation": "ラジオ局を選択"
+  },
+  "player": {
+    "selectStation": "ラジオ局を選択"
+  },
+  "search": {
+    "placeholder": "局を検索...",
+    "byName": "名前で",
+    "byCountry": "国で",
+    "topStations": "トップ局",
+    "randomStations": "ランダム局",
+    "clearFilters": "フィルターをクリア"
+  },
+  "stations": {
+    "noResults": "局が見つかりません",
+    "tryChangeFilters": "検索またはフィルターを変更してみてください",
+    "loading": "局を読み込み中...",
+    "error": "局の読み込みに失敗しました",
+    "title": "ラジオ局",
+    "nowPlaying": "再生中"
+  },
+  "language": {
+    "select": "言語を選択"
+  },
+  "profile": {
+    "guest": "ゲスト",
+    "webApp": "ウェブアプリ",
+    "telegramUser": "Telegramユーザー"
+  }
+}

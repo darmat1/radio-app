@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "广播",
+    "selectStation": "选择广播电台"
+  },
+  "player": {
+    "selectStation": "选择广播电台"
+  },
+  "search": {
+    "placeholder": "搜索电台...",
+    "byName": "按名称",
+    "byCountry": "按国家",
+    "topStations": "热门电台",
+    "randomStations": "随机电台"
+  },
+  "stations": {
+    "noResults": "未找到电台",
+    "loading": "加载电台中...",
+    "error": "加载电台失败"
+  },
+  "language": {
+    "select": "选择语言"
+  }
+}

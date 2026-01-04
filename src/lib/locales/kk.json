@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Радио",
+    "selectStation": "Радиостанцияны таңдаңыз"
+  },
+  "player": {
+    "selectStation": "Радиостанцияны таңдаңыз"
+  },
+  "search": {
+    "placeholder": "Станцияларды іздеу...",
+    "byName": "Аты бойынша",
+    "byCountry": "Ел бойынша",
+    "topStations": "Топ станциялар",
+    "randomStations": "Кездейсоқ станциялар"
+  },
+  "stations": {
+    "noResults": "Станциялар табылмады",
+    "tryChangeFilters": "Іздеуді немесе сүзгілерді өзгертуді көріңіз",
+    "loading": "Станциялар жүктелуде...",
+    "error": "Станцияларды жүктей алмады",
+    "title": "Радиостанциялар",
+    "nowPlaying": "Қазір ойнатылады"
+  },
+  "language": {
+    "select": "Тілді таңдау"
+  },
+  "profile": {
+    "guest": "Қонақ",
+    "webApp": "Веб қосымшасы",
+    "telegramUser": "Telegram қолданушысы"
+  }
+}

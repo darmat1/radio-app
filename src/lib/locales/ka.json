@@ -1,0 +1,33 @@
+{
+  "app": {
+    "title": "რადიო",
+    "selectStation": "აირჩიეთ რადიოსადგური"
+  },
+  "player": {
+    "selectStation": "აირჩიეთ რადიოსადგური"
+  },
+  "search": {
+    "placeholder": "სადგურების ძიება...",
+    "byName": "სახელით",
+    "byCountry": "ქვეყნის მიხედვით",
+    "topStations": "ტოპ სადგურები",
+    "randomStations": "შემთხვევითი სადგურები",
+    "clearFilters": "ფილტრების გასუფთავება"
+  },
+  "stations": {
+    "noResults": "სადგურები არ მოიძებნა",
+    "tryChangeFilters": "სცადეთ შეცვალოთ ძიება ან ფილტრები",
+    "loading": "სადგურების ჩატვირთვა...",
+    "error": "სადგურების ჩატვირთვა ვერ მოხერხდა",
+    "title": "რადიოსადგურები",
+    "nowPlaying": "ახლა გადმოსცემს"
+  },
+  "language": {
+    "select": "ენის არჩევა"
+  },
+  "profile": {
+    "guest": "სტუმარი",
+    "webApp": "ვებ აპლიკაცია",
+    "telegramUser": "Telegram მომხმარებელი"
+  }
+}

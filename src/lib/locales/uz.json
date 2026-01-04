@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Radio",
+    "selectStation": "Radio stansiyasini tanlang"
+  },
+  "player": {
+    "selectStation": "Radio stansiyasini tanlang"
+  },
+  "search": {
+    "placeholder": "Stansiyalarni qidirish...",
+    "byName": "Nomi bo'yicha",
+    "byCountry": "Mamlakat bo'yicha",
+    "topStations": "Top stansiyalar",
+    "randomStations": "Tasodifiy stansiyalar"
+  },
+  "stations": {
+    "noResults": "Stansiyalar topilmadi",
+    "tryChangeFilters": "Qidirish yoki filterlarni o'zgartirib ko'ring",
+    "loading": "Stansiyalar yuklanmoqda...",
+    "error": "Stansiyalarni yuklab bo'lmadi",
+    "title": "Radio stansiyalari",
+    "nowPlaying": "Hozir ijro etilmoqda"
+  },
+  "language": {
+    "select": "Tilni tanlang"
+  },
+  "profile": {
+    "guest": "Mehmon",
+    "webApp": "Veb-ilova",
+    "telegramUser": "Telegram foydalanuvchisi"
+  }
+}

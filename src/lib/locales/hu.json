@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "Rádió",
+    "selectStation": "Válasszon rádióállomást"
+  },
+  "player": {
+    "selectStation": "Válasszon rádióállomást"
+  },
+  "search": {
+    "placeholder": "Állomások keresése...",
+    "byName": "Név szerint",
+    "byCountry": "Ország szerint",
+    "topStations": "Top állomások",
+    "randomStations": "Véletlenszerű állomások"
+  },
+  "stations": {
+    "noResults": "Nem található állomás",
+    "loading": "Állomások betöltése...",
+    "error": "Állomások betöltése sikertelen"
+  },
+  "language": {
+    "select": "Nyelv kiválasztása"
+  }
+}

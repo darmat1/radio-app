@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "Radio",
+    "selectStation": "Selectați o stație radio"
+  },
+  "player": {
+    "selectStation": "Selectați o stație radio"
+  },
+  "search": {
+    "placeholder": "Căutați stații...",
+    "byName": "Denumire",
+    "byCountry": "După țară",
+    "topStations": "Stații de top",
+    "randomStations": "Stații aleatorii"
+  },
+  "stations": {
+    "noResults": "Nu s-au găsit stații",
+    "loading": "Se încarcă stațiile...",
+    "error": "Eroare la încărcarea stațiilor"
+  },
+  "language": {
+    "select": "Selectați limba"
+  }
+}

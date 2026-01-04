@@ -1,0 +1,59 @@
+{
+  "app": {
+    "title": "Радио",
+    "selectStation": "Выберите радиостанцию"
+  },
+  "player": {
+    "selectStation": "Выберите радиостанцию"
+  },
+  "search": {
+    "placeholder": "Поиск станций...",
+    "byName": "По названию",
+    "byCountry": "По стране",
+    "searchCountry": "Поиск страны...",
+    "topStations": "Топ станции",
+    "randomStations": "Случайные станции",
+    "clearFilters": "Сбросить фильтры"
+  },
+  "stations": {
+    "noResults": "Станции не найдены",
+    "tryChangeFilters": "Попробуйте изменить поиск или фильтры",
+    "tryDifferentSearch": "Попробуйте другой поисковый запрос",
+    "loading": "Загрузка станций...",
+    "loading": "Загрузка...",
+    "error": "Ошибка загрузки станций",
+    "error": "Ошибка",
+    "retry": "Повторить",
+    "title": "Радиостанции",
+    "nowPlaying": "Сейчас играет",
+    "stopped": "Остановлено"
+  },
+  "language": {
+    "select": "Выбрать язык"
+  },
+  "profile": {
+    "guest": "Гость",
+    "webApp": "Веб-приложение",
+    "telegramUser": "Telegram пользователь"
+  },
+  "sidebar": {
+    "title": "Фильтры и опции",
+    "quickActions": "Быстрые действия",
+    "topVoted": "Топ по голосам",
+    "recentlyClicked": "Недавно нажатые",
+    "recentlyChanged": "Недавно измененные",
+    "random": "Случайные",
+    "advancedSearch": "Расширенный поиск",
+    "clearFilters": "Очистить фильтры",
+    "stationName": "Название станции",
+    "namePlaceholder": "Введите название станции...",
+    "limit": "Лимит результатов",
+    "country": "Страна",
+    "selectCountry": "Выберите страну",
+    "language": "Язык",
+    "selectLanguage": "Выберите язык",
+    "tag": "Тег",
+    "selectTag": "Выберите тег",
+    "search": "Найти станции"
+  }
+}

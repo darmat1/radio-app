@@ -1,0 +1,59 @@
+{
+  "app": {
+    "title": "Radio",
+    "selectStation": "Select a radio station"
+  },
+  "player": {
+    "selectStation": "Select a radio station"
+  },
+  "search": {
+    "placeholder": "Search stations...",
+    "byName": "By name",
+    "byCountry": "By country",
+    "searchCountry": "Search country...",
+    "topStations": "Top stations",
+    "randomStations": "Random stations",
+    "clearFilters": "Clear filters"
+  },
+  "stations": {
+    "noResults": "No stations found",
+    "tryChangeFilters": "Try changing search or filters",
+    "tryDifferentSearch": "Try a different search term",
+    "loading": "Loading stations...",
+    "loading": "Loading...",
+    "error": "Failed to load stations",
+    "error": "Error",
+    "retry": "Retry",
+    "title": "Radio stations",
+    "nowPlaying": "Now playing",
+    "stopped": "Stopped"
+  },
+  "language": {
+    "select": "Select language"
+  },
+  "profile": {
+    "guest": "Guest",
+    "webApp": "Web app",
+    "telegramUser": "Telegram user"
+  },
+  "sidebar": {
+    "title": "Filters & Options",
+    "quickActions": "Quick Actions",
+    "topVoted": "Top Voted",
+    "recentlyClicked": "Recently Clicked",
+    "recentlyChanged": "Recently Changed",
+    "random": "Random",
+    "advancedSearch": "Advanced Search",
+    "clearFilters": "Clear Filters",
+    "stationName": "Station Name",
+    "namePlaceholder": "Enter station name...",
+    "limit": "Results Limit",
+    "country": "Country",
+    "selectCountry": "Select country",
+    "language": "Language",
+    "selectLanguage": "Select language",
+    "tag": "Tag",
+    "selectTag": "Select tag",
+    "search": "Search Stations"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "app": {
+    "title": "Радіо",
+    "selectStation": "Виберіть радіостанцію"
+  },
+  "player": {
+    "selectStation": "Виберіть радіостанцію"
+  },
+  "search": {
+    "placeholder": "Пошук станцій...",
+    "byName": "За назвою",
+    "byCountry": "За країною",
+    "topStations": "Топ станції",
+    "randomStations": "Випадкові станції",
+    "clearFilters": "Скинути фільтри"
+  },
+  "stations": {
+    "noResults": "Станції не знайдено",
+    "tryChangeFilters": "Спробуйте змінити пошук або фільтри",
+    "tryDifferentSearch": "Спробуйте інший пошуковий запит",
+    "loading": "Завантаження станцій...",
+    "error": "Не вдалося завантажити станції",
+    "retry": "Повторити",
+    "title": "Радіостанції",
+    "nowPlaying": "Зараз грає"
+  },
+  "language": {
+    "select": "Вибрати мову"
+  },
+  "profile": {
+    "guest": "Гість",
+    "webApp": "Веб-додаток",
+    "telegramUser": "Telegram користувач"
+  },
+  "sidebar": {
+    "title": "Фільтри та опції",
+    "quickActions": "Швидкі дії",
+    "topVoted": "Топ за голосами",
+    "recentlyClicked": "Нещодавно натиснуті",
+    "recentlyChanged": "Нещодавно змінені",
+    "random": "Випадкові",
+    "advancedSearch": "Розширений пошук",
+    "clearFilters": "Очистити фільтри",
+    "stationName": "Назва станції",
+    "namePlaceholder": "Введіть назву станції...",
+    "limit": "Обмеження результатів",
+    "country": "Країна",
+    "selectCountry": "Оберіть країну",
+    "language": "Мова",
+    "selectLanguage": "Оберіть мову",
+    "tag": "Тег",
+    "selectTag": "Оберіть тег",
+    "search": "Знайти станції"
+  }
+}
