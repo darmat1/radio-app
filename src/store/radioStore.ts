@@ -170,11 +170,21 @@ export const useRadioStore = create<RadioStore>((set, get) => {
               });
               setupMediaSession(station);
               localStorage.setItem('lastPlayedStation', JSON.stringify(station));
+
+              // Ensure playback state is updated in MediaSession
+              if ('mediaSession' in navigator) {
+                navigator.mediaSession.playbackState = 'playing';
+              }
             }
           },
           onloaderror: (id, error) => {
             console.log('Load error:', error, 'for station:', station.name, useProxy ? '(proxy failed)' : '(trying proxy fallback)');
             const currentStore = get();
+
+            if ('mediaSession' in navigator) {
+              navigator.mediaSession.playbackState = 'none';
+            }
+
             if (currentStore.currentStation?.id === station.id) {
               if (!useProxy) {
                 // Initial attempt failed, retry with proxy
@@ -192,6 +202,11 @@ export const useRadioStore = create<RadioStore>((set, get) => {
           onplayerror: (id, error) => {
             console.log('Play error:', error, 'for station:', station.name, useProxy ? '(proxy failed)' : '(trying proxy fallback)');
             const currentStore = get();
+
+            if ('mediaSession' in navigator) {
+              navigator.mediaSession.playbackState = 'none';
+            }
+
             if (currentStore.currentStation?.id === station.id) {
               if (!useProxy) {
                 // Initial attempt failed, retry with proxy

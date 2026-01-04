@@ -15,6 +15,16 @@ export default function Home() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
+    // Initialize Telegram WebApp
+    if (typeof window !== 'undefined' && (window as any).Telegram?.WebApp) {
+      const tg = (window as any).Telegram.WebApp;
+      tg.ready();
+      tg.expand();
+      // Set theme color to match app
+      tg.setHeaderColor('#111827');
+      tg.setBackgroundColor('#030712');
+    }
+
     loadLastStation();
     searchStations();
   }, []);
@@ -27,21 +37,21 @@ export default function Home() {
           <Search />
         </div>
       </div>
-      
+
       {/* Station List takes remaining space */}
       <div className="pt-32 pb-32">
         <div className="max-w-md mx-auto px-4">
           <StationList />
         </div>
       </div>
-      
+
       {/* Fixed Player at bottom */}
       <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800">
         <div className="max-w-md mx-auto">
           <Player onSidebarToggle={() => setShowSidebar(true)} />
         </div>
       </div>
-      
+
       {/* Sidebar */}
       <Sidebar isOpen={showSidebar} onClose={() => setShowSidebar(false)} />
     </div>
