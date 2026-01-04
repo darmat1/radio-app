@@ -27,26 +27,15 @@ class RadioAPI {
       url.searchParams.set('order', 'name');
       url.searchParams.set('hidebroken', 'true');
       
-      console.log('Fetching countries from:', url.toString());
-      
       const response = await fetch(url.toString());
-      console.log('Countries response status:', response.status, response.ok);
       
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for countries`);
         return [];
       }
       
       const data = await response.json();
-      console.log('Countries data received:', Array.isArray(data) ? `${data.length} countries` : 'Invalid data');
-      
-      if (Array.isArray(data) && data.length > 0) {
-        console.log('Sample countries:', data.slice(0, 3).map(c => c.name));
-      }
-      
       return data;
     } catch (error) {
-      console.error('Failed to fetch countries:', error);
       return [];
     }
   }
@@ -60,12 +49,10 @@ class RadioAPI {
       
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for languages`);
         return [];
       }
       return await response.json();
     } catch (error) {
-      console.error('Failed to fetch languages:', error);
       return [];
     }
   }
@@ -80,12 +67,10 @@ class RadioAPI {
       
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for tags`);
         return [];
       }
       return await response.json();
     } catch (error) {
-      console.error('Failed to fetch tags:', error);
       return [];
     }
   }
@@ -100,19 +85,31 @@ class RadioAPI {
         url.searchParams.set('country', country);
       }
       
-      console.log('Search by name URL:', url.toString());
-      
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for ${url.toString()}`);
         return [];
       }
       const data = await response.json();
-      console.log('Search by country results:', data.length, 'stations found');
-      // Filter out stations with names starting with dot
       return data.filter(station => station.name && !station.name.startsWith('.'));
     } catch (error) {
-      console.error('Failed to search stations by country:', error);
+      return [];
+    }
+  }
+
+  async searchByCountryExact(country: string, limit: number = 50): Promise<any[]> {
+    try {
+      const url = new URL(`${this.baseURL}json/stations/bycountryexact/${encodeURIComponent(country)}`);
+      if (limit) {
+        url.searchParams.set('limit', limit.toString());
+      }
+      
+      const response = await fetch(url.toString());
+      if (!response.ok) {
+        return [];
+      }
+      const data = await response.json();
+      return data.filter(station => station.name && !station.name.startsWith('.'));
+    } catch (error) {
       return [];
     }
   }
@@ -129,15 +126,11 @@ class RadioAPI {
       
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for ${url.toString()}`);
         return [];
       }
       const data = await response.json();
-      console.log('Search results:', data.length, 'stations found');
-      // Filter out stations with names starting with dot
-      return data.filter(station => station.name && !station.name.startsWith('.'));
+      return data;
     } catch (error) {
-      console.error('Failed to search stations by tag:', error);
       return [];
     }
   }
@@ -154,14 +147,10 @@ class RadioAPI {
       
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for ${url.toString()}`);
         return [];
       }
-      const data = await response.json();
-      console.log('Language search results:', data.length, 'stations found');
-      return data;
+      return await response.json();
     } catch (error) {
-      console.error('Failed to search stations by language:', error);
       return [];
     }
   }
@@ -178,15 +167,10 @@ class RadioAPI {
       
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for ${url.toString()}`);
         return [];
       }
-      const data = await response.json();
-      console.log('Advanced search results:', data.length, 'stations found');
-      // Filter out stations with names starting with dot
-      return data.filter(station => station.name && !station.name.startsWith('.'));
+      return await response.json();
     } catch (error) {
-      console.error('Failed to search stations by codec:', error);
       return [];
     }
   }
@@ -251,7 +235,6 @@ class RadioAPI {
         hidebroken = true
       } = params;
 
-      // Add parameters to URL only if they have values
       if (name) url.searchParams.set('name', name);
       if (nameExact) url.searchParams.set('nameExact', 'true');
       if (country) url.searchParams.set('country', country);
@@ -280,20 +263,14 @@ class RadioAPI {
       if (offset > 0) url.searchParams.set('offset', offset.toString());
       if (limit && limit !== 100000) url.searchParams.set('limit', limit.toString());
       if (hidebroken) url.searchParams.set('hidebroken', 'true');
-      
-      console.log('Advanced search URL:', url.toString());
-      
+       
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status} for advanced search`);
         return [];
       }
       const data = await response.json();
-      console.log('Advanced search results:', data.length, 'stations found');
-      // Filter out stations with names starting with dot
       return data.filter(station => station.name && !station.name.startsWith('.'));
     } catch (error) {
-      console.error('Failed to perform advanced search:', error);
       return [];
     }
   }
@@ -303,26 +280,22 @@ class RadioAPI {
       const url = new URL(`${this.baseURL}json/stations/topvote/${limit}`);
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status}`);
         return [];
       }
       return await response.json();
     } catch (error) {
-      console.error('Failed to get top stations:', error);
       return [];
     }
   }
 
   async getRandomStations(limit: number = 50): Promise<any[]> {
     try {
-      // Use advanced search with random ordering instead of non-existent random endpoint
       return this.searchStationsAdvanced({
         limit,
         order: 'random',
         hidebroken: true
       });
     } catch (error) {
-      console.error('Failed to get random stations:', error);
       return [];
     }
   }
@@ -332,12 +305,10 @@ class RadioAPI {
       const url = new URL(`${this.baseURL}json/stations/lastclick/${limit}`);
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status}`);
         return [];
       }
       return await response.json();
     } catch (error) {
-      console.error('Failed to get recently clicked stations:', error);
       return [];
     }
   }
@@ -347,12 +318,10 @@ class RadioAPI {
       const url = new URL(`${this.baseURL}json/stations/lastchange/${limit}`);
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status}`);
         return [];
       }
       return await response.json();
     } catch (error) {
-      console.error('Failed to get recently changed stations:', error);
       return [];
     }
   }
@@ -365,12 +334,10 @@ class RadioAPI {
       }
       const response = await fetch(url.toString());
       if (!response.ok) {
-        console.warn(`HTTP error! status: ${response.status}`);
         return [];
       }
       return await response.json();
     } catch (error) {
-      console.error('Failed to fetch stations by UUID:', error);
       return [];
     }
   }

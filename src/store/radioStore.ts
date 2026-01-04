@@ -1,14 +1,12 @@
 import { create } from 'zustand';
 import { radioAPI, Station } from '@/lib/radioAPI';
 
-// Helper function to create proxy URL
 const getProxyUrl = (originalUrl: string): string => {
   try {
     const url = new URL(originalUrl);
     const pathWithoutProtocol = url.toString().replace(/^https?:\/\//, '');
     return `/api/proxy/${pathWithoutProtocol}`;
   } catch (error) {
-    console.error('Invalid URL for proxy:', originalUrl, error);
     return originalUrl;
   }
 };
@@ -49,7 +47,6 @@ export const useRadioStore = create<RadioStore>((set, get) => {
         const station = JSON.parse(lastStation);
         set({ currentStation: station });
       } catch (error) {
-        // Failed to parse station
       }
     }
   };
@@ -84,7 +81,6 @@ export const useRadioStore = create<RadioStore>((set, get) => {
           audioInstance.src = '';
           audioInstance.load();
         } catch (e) {
-          // Ignore errors during cleanup
         }
         audioInstance.removeEventListener('error', () => {});
         audioInstance.removeEventListener('loadstart', () => {});
@@ -96,7 +92,6 @@ export const useRadioStore = create<RadioStore>((set, get) => {
 
       await new Promise(resolve => setTimeout(resolve, 50));
 
-      // Try direct URL first, only use proxy for CORS issues
       audioInstance = new Audio();
       audioInstance.preload = 'metadata';
       audioInstance.crossOrigin = null;
@@ -114,9 +109,7 @@ export const useRadioStore = create<RadioStore>((set, get) => {
       audioInstance.addEventListener('error', (e) => {
         const currentStore = get();
         if (currentStore.currentStation?.id === station.id) {
-          // Only try proxy if direct URL fails due to CORS
           if (!audioInstance.src?.includes('proxy')) {
-            console.log('Direct URL failed due to CORS, trying proxy...');
             audioInstance.src = proxyUrl;
             audioInstance.crossOrigin = 'anonymous';
             audioInstance.load();
@@ -193,15 +186,15 @@ export const useRadioStore = create<RadioStore>((set, get) => {
         let results;
         
         if (!query && country) {
-          results = await radioAPI.searchByCountryExact(country, 30); // Reduced from 50
+          results = await radioAPI.searchByCountryExact(country, 30);
         } else if (query && !country) {
-          results = await radioAPI.searchByName(query, undefined, 30); // Reduced from 50
+          results = await radioAPI.searchByName(query, undefined, 30);
         } else {
           results = await radioAPI.searchStationsAdvanced({
             name: query || undefined,
             country: country || undefined,
             countryExact: !!country,
-            limit: 30, // Reduced from 50
+            limit: 30,
             hidebroken: true,
             order: 'name'
           });
