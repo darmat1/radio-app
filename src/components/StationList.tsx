@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRadioStore } from '@/store/radioStore';
+import { Station } from '@/lib/radioAPI';
+import StationFavicon from './StationFavicon';
 
 export default function StationList() {
   const { t } = useTranslation();
   const { stations, currentStation, isLoading, hasError, loadingStationId, playingStationId, errorStationId, playStation, searchQuery, selectedCountry } = useRadioStore();
-  
+
 
 
   // Only show loading skeleton when stations are being loaded, not when audio is loading
@@ -67,55 +70,29 @@ export default function StationList() {
           <button
             key={`${station.id}-${index}`}
             onClick={() => playStation(station)}
-            className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors text-left ${
-              currentStation?.id === station.id
-                ? 'bg-blue-600' 
-                : 'bg-gray-800 hover:bg-gray-700'
-            }`}
+            className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors text-left ${currentStation?.id === station.id
+              ? 'bg-blue-600'
+              : 'bg-gray-800 hover:bg-gray-700'
+              }`}
           >
-            {station.favicon && station.favicon !== 'null' ? (
-              <img 
-                src={station.favicon} 
-                alt={station.name}
-                className="w-12 h-12 rounded object-cover flex-shrink-0"
-                onError={(e) => {
-                  // Hide image on error and show fallback icon
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  // Show fallback gradient
-                  const parent = target.parentElement;
-                  if (parent) {
-                    parent.className = 'w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center flex-shrink-0';
-                    parent.innerHTML = '<svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 2-.895 3-2 2 1.343z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-                  }
-                }}
-              />
-            ) : (
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center flex-shrink-0">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                </svg>
-              </div>
-            )}
-            
+            <StationFavicon station={station} />
+
             <div className="flex-1 min-w-0">
-              <h3 className={`font-medium truncate ${
-                currentStation?.id === station.id ? 'text-white' : 'text-gray-200'
-              }`}>
+              <h3 className={`font-medium truncate ${currentStation?.id === station.id ? 'text-white' : 'text-gray-200'
+                }`}>
                 {station.name}
               </h3>
-              <p className={`text-sm ${
-                currentStation?.id === station.id ? 'text-blue-100' : 'text-gray-400'
-              }`}>
+              <p className={`text-sm ${currentStation?.id === station.id ? 'text-blue-100' : 'text-gray-400'
+                }`}>
                 {station.country}
               </p>
             </div>
-            
+
             <div className="flex-shrink-0">
               {(() => {
                 // Check if this is the current station being processed
                 if (currentStation?.id !== station.id) return null;
-                
+
                 if (loadingStationId === station.id) {
                   return (
                     <div className="flex items-center space-x-1">
@@ -124,7 +101,7 @@ export default function StationList() {
                     </div>
                   );
                 }
-                
+
                 if (playingStationId === station.id) {
                   return (
                     <div className="flex items-center space-x-1">
@@ -133,7 +110,7 @@ export default function StationList() {
                     </div>
                   );
                 }
-                
+
                 if (errorStationId === station.id) {
                   return (
                     <div className="flex items-center space-x-1">
@@ -142,7 +119,7 @@ export default function StationList() {
                     </div>
                   );
                 }
-                
+
                 return null;
               })()}
             </div>

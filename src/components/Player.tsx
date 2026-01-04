@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRadioStore } from '@/store/radioStore';
+import StationFavicon from './StationFavicon';
 
 export default function Player({ onSidebarToggle }: { onSidebarToggle: () => void }) {
   const { t } = useTranslation();
@@ -38,23 +39,10 @@ export default function Player({ onSidebarToggle }: { onSidebarToggle: () => voi
     <>
       <div className="bg-gray-900 p-4 rounded-lg">
         <div className="flex items-center space-x-3">
-          {currentStation.favicon && currentStation.favicon !== 'null' ? (
-            <img
-              src={currentStation.favicon}
-              alt={currentStation.name}
-              className="w-12 h-12 rounded-lg object-cover"
-              onError={(e) => {
-                // Hide image on error to prevent broken images
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
-            />
-          ) : (
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-              </svg>
-            </div>
-          )}
+          <StationFavicon
+            station={currentStation}
+            className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+          />
 
           <div className="flex-1 min-w-0">
             <h3 className="text-white font-medium text-sm truncate">{currentStation.name}</h3>
@@ -68,7 +56,7 @@ export default function Player({ onSidebarToggle }: { onSidebarToggle: () => voi
             </div>
           </div>
 
-           <button
+          <button
             onClick={() => {
               if (playingStationId === currentStation?.id) {
                 pauseStation();
