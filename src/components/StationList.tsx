@@ -79,8 +79,15 @@ export default function StationList() {
                 alt={station.name}
                 className="w-12 h-12 rounded object-cover flex-shrink-0"
                 onError={(e) => {
-                  // Hide image on error to prevent broken images
-                  (e.target as HTMLImageElement).style.display = 'none';
+                  // Hide image on error and show fallback icon
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  // Show fallback gradient
+                  const parent = target.parentElement;
+                  if (parent) {
+                    parent.className = 'w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center flex-shrink-0';
+                    parent.innerHTML = '<svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 2-.895 3-2 2 1.343z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                  }
                 }}
               />
             ) : (
